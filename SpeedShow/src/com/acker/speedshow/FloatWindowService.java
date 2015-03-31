@@ -22,7 +22,7 @@ public class FloatWindowService extends Service implements Constants {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		Log.e("TAG", Thread.currentThread().getId() + "----->1");
+//		Log.e("TAG", Thread.currentThread().getId() + "----->1");
 		if (timer == null) {
 			timer = new Timer();
 			timer.scheduleAtFixedRate(new RefreshTask(), 0, TIME_SPAN);
@@ -45,7 +45,7 @@ public class FloatWindowService extends Service implements Constants {
 		@Override
 		public void run() {
 			// 当前没有悬浮窗显示，则创建悬浮窗。
-			Log.e("TAG", Thread.currentThread().getId() + "----->2");
+//			Log.e("TAG", Thread.currentThread().getId() + "----->2");
 			if (!MyWindowManager.isWindowShowing()) {
 				handler.post(new Runnable() {
 					@Override
@@ -61,7 +61,7 @@ public class FloatWindowService extends Service implements Constants {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						Log.e("TAG", Thread.currentThread().getId() + "----->3");
+//						Log.e("TAG", Thread.currentThread().getId() + "----->3");
 						MyWindowManager.updateViewData(getApplicationContext());
 					}
 				});
