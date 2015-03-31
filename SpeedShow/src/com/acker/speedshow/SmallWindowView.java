@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
-public class SmallWindowView extends LinearLayout{
+public class SmallWindowView extends LinearLayout {
 	public int viewWidth;
 	public int viewHeight;
 

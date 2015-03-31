@@ -9,8 +9,8 @@ import android.net.TrafficStats;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 
@@ -98,7 +98,7 @@ public class MyWindowManager implements Constants {
 					if ((System.currentTimeMillis() - exitTime) < CHANGE_DELAY) {
 						removeBigWindow(context);
 						createSmallWindow(context);
-					} else{
+					} else {
 						exitTime = System.currentTimeMillis();
 					}
 					break;
@@ -168,7 +168,7 @@ public class MyWindowManager implements Constants {
 					if ((System.currentTimeMillis() - exitTime) < CHANGE_DELAY) {
 						removeSmallWindow(context);
 						createBigWindow(context);
-					} else{
+					} else {
 						exitTime = System.currentTimeMillis();
 					}
 					break;
@@ -218,12 +218,20 @@ public class MyWindowManager implements Constants {
 		wlanRecvSum = tempWlanRx;
 		wlanSendSum = tempWlanTx;
 		if (mBigWindowView != null) {
-			tvMobileRx.setText(showSpeed(mobileRecvSpeed));
-			tvMobileTx.setText(showSpeed(mobileSendSpeed));
-			tvWlanRx.setText(showSpeed(wlanRecvSpeed));
-			tvWlanTx.setText(showSpeed(wlanSendSpeed));
+			if (mobileRecvSpeed >= 0) {
+				tvMobileRx.setText(showSpeed(mobileRecvSpeed));
+			}
+			if (mobileSendSpeed >= 0) {
+				tvMobileTx.setText(showSpeed(mobileSendSpeed));
+			}
+			if (wlanRecvSpeed >= 0) {
+				tvWlanRx.setText(showSpeed(wlanRecvSpeed));
+			}
+			if (wlanSendSpeed >= 0) {
+				tvWlanTx.setText(showSpeed(wlanSendSpeed));
+			}
 		}
-		if (mSmallWindowView != null) {
+		if (mSmallWindowView != null && totalSpeed >= 0) {
 			tvSum.setText(showSpeed(totalSpeed));
 		}
 
