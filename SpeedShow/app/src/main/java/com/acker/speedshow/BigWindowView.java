@@ -3,8 +3,6 @@ package com.acker.speedshow;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 public class BigWindowView extends WindowView {
 
