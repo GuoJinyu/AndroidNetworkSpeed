@@ -6,4 +6,5 @@ public interface Constants {
     long CHANGE_DELAY = 300;
     int SMALL_WINDOW_TYPE = 0;
     int BIG_WINDOW_TYPE = 1;
+    int OVERLAY_PERMISSION_REQ_CODE = 11;
 }

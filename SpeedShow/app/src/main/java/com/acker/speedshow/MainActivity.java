@@ -1,34 +1,46 @@
 package com.acker.speedshow;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Constants {
     private Button btnOpen;
     private Button btnClose;
     private PreferenceUtil preUtil;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preUtil = PreferenceUtil.getSingleton(getApplicationContext());
         setContentView(R.layout.activity_main);
-        final Intent intent = new Intent(MainActivity.this,
-                FloatWindowService.class);
+        intent = new Intent(MainActivity.this, FloatWindowService.class);
         btnOpen = (Button) findViewById(R.id.buttonOpen);
         btnOpen.setOnClickListener(new OnClickListener() {
 
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                startService(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_alert), Toast.LENGTH_LONG).show();
+                    Intent permissionIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(permissionIntent, OVERLAY_PERMISSION_REQ_CODE);
+                } else {
+                    startService(intent);
+                }
             }
         });
         btnClose = (Button) findViewById(R.id.buttonClose);
@@ -44,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,10 +75,24 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_boot) {
             item.setChecked(!item.isChecked());
-            preUtil.saveBoolean(getResources().getString(R.string.action_boot),item.isChecked());
+            preUtil.saveBoolean(getResources().getString(R.string.action_boot), item.isChecked());
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getApplicationContext())) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_result), Toast.LENGTH_SHORT).show();
+            } else {
+                startService(intent);
+            }
+        }
+    }
 }
+
