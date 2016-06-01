@@ -25,3 +25,20 @@ proguard/
 
 # Log Files
 *.log
+
+# OSX
+
+*.DS_Store
+
+
+# Gradle files
+build/
+.gradle/
+*/build/
+
+
+# IDEA
+*.iml
+.idea
+
+
