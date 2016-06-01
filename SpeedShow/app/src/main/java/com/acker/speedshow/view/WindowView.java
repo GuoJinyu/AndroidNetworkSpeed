@@ -1,4 +1,4 @@
-package com.acker.speedshow;
+package com.acker.speedshow.view;
 
 import android.content.Context;
 import android.widget.RelativeLayout;

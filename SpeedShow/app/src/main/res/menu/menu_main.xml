@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
     <item
         android:id="@+id/action_boot"
-        android:orderInCategory="1"
-        android:title="@string/action_boot"
         android:checkable="true"
         android:checked="true"
+        android:orderInCategory="1"
+        android:title="@string/action_boot"
         app:showAsAction="never" />
 </menu>

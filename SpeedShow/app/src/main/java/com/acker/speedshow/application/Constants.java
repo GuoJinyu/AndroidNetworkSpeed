@@ -1,4 +1,4 @@
-package com.acker.speedshow;
+package com.acker.speedshow.application;
 
 public interface Constants {
     // 默认static final

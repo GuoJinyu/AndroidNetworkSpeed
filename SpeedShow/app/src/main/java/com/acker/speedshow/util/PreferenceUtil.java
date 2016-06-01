@@ -1,4 +1,4 @@
-package com.acker.speedshow;
+package com.acker.speedshow.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

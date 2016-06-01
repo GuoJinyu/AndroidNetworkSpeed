@@ -1,4 +1,4 @@
-package com.acker.speedshow;
+package com.acker.speedshow.controller;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -12,10 +12,17 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 
+import com.acker.speedshow.R;
+import com.acker.speedshow.application.Constants;
+import com.acker.speedshow.view.BigWindowView;
+import com.acker.speedshow.view.SmallWindowView;
+import com.acker.speedshow.view.WindowView;
+
 import java.text.DecimalFormat;
 
 public class MyWindowManager implements Constants {
 
+    private static MyWindowManager instance;
     private WindowManager mWindowManager;
     private WindowView mBigWindowView;
     private WindowView mSmallWindowView;
@@ -32,7 +39,6 @@ public class MyWindowManager implements Constants {
     private long wlanSendSum = 0;
     private long exitTime = 0;
     private DecimalFormat showFloatFormat = new DecimalFormat("0.00");
-    private static MyWindowManager instance;
 
     public static MyWindowManager getInstance() {
         if (instance == null) {

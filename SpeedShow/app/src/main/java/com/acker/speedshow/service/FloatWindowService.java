@@ -1,9 +1,12 @@
-package com.acker.speedshow;
+package com.acker.speedshow.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+
+import com.acker.speedshow.application.Constants;
+import com.acker.speedshow.controller.MyWindowManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
