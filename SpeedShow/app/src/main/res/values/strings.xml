@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">网速悬浮窗</string>
     <string name="action_boot">开机自启</string>
     <string name="action_donate">支付宝捐赠</string>

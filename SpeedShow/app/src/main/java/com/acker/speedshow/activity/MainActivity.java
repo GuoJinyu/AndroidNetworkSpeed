@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.getItem(0).setChecked(preUtil.getBoolean(getResources().getString(R.string.action_boot), true));
+        menu.getItem(0).setChecked(preUtil.getBoolean(SP_BOOT, true));
         return true;
     }
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
         switch (id) {
             case R.id.action_boot:
                 item.setChecked(!item.isChecked());
-                preUtil.saveBoolean(getResources().getString(R.string.action_boot), item.isChecked());
+                preUtil.saveBoolean(SP_BOOT, item.isChecked());
                 break;
             case R.id.action_donate:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MY_ALIPAY_URL));

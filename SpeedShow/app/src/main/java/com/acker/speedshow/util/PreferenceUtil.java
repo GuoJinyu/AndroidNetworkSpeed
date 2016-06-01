@@ -16,9 +16,9 @@ public class PreferenceUtil {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static PreferenceUtil getSingleton(Context context){
-        if (singleton == null){
-            singleton=new PreferenceUtil(context);
+    public static PreferenceUtil getSingleton(Context context) {
+        if (singleton == null) {
+            singleton = new PreferenceUtil(context);
         }
         return singleton;
     }
