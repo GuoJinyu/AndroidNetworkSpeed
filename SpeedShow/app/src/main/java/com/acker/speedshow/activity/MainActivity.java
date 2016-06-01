@@ -77,13 +77,18 @@ public class MainActivity extends AppCompatActivity implements Constants {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_boot) {
-            item.setChecked(!item.isChecked());
-            preUtil.saveBoolean(getResources().getString(R.string.action_boot), item.isChecked());
-            return true;
+        switch (id) {
+            case R.id.action_boot:
+                item.setChecked(!item.isChecked());
+                preUtil.saveBoolean(getResources().getString(R.string.action_boot), item.isChecked());
+                break;
+            case R.id.action_donate:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MY_ALIPAY_URL));
+                startActivity(intent);
+                break;
+            default:
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

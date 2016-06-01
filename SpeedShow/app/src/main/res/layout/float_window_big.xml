@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="M↑:"
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/tvMobileTx"
@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/textView1"
         android:text=""
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -31,7 +31,7 @@
         android:layout_below="@+id/textView1"
         android:text="M↓:"
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/tvMobileRx"
@@ -42,7 +42,7 @@
         android:layout_toRightOf="@+id/textView2"
         android:text=""
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -51,7 +51,7 @@
         android:layout_below="@+id/textView2"
         android:text="W↑:"
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/tvWlanTx"
@@ -62,7 +62,7 @@
         android:layout_toRightOf="@+id/textView3"
         android:text=""
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -71,7 +71,7 @@
         android:layout_below="@+id/textView3"
         android:text="W↓:"
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/tvWlanRx"
@@ -82,6 +82,6 @@
         android:layout_toRightOf="@+id/textView4"
         android:text=""
         android:textColor="#ffffff"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 
 </RelativeLayout>
