@@ -3,7 +3,9 @@ package com.acker.speedshow.controller;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.acker.speedshow.R;
 import com.acker.speedshow.application.Constants;
+import com.acker.speedshow.util.PreferenceUtil;
 import com.acker.speedshow.view.BigWindowView;
 import com.acker.speedshow.view.SmallWindowView;
 import com.acker.speedshow.view.WindowView;
@@ -62,6 +65,8 @@ public class MyWindowManager implements Constants {
                 mSmallWindowView = null;
                 if (mBigWindowView == null) {
                     mBigWindowView = new BigWindowView(context);
+                    Drawable background = getCurrentBgDrawable(context);
+                    setViewBg(background);
                     setOnTouchListener(windowManager, context, mBigWindowView, SMALL_WINDOW_TYPE);
                     windowManager.addView(mBigWindowView, windowParams);
                 }
@@ -75,6 +80,8 @@ public class MyWindowManager implements Constants {
                 mBigWindowView = null;
                 if (mSmallWindowView == null) {
                     mSmallWindowView = new SmallWindowView(context);
+                    Drawable background = getCurrentBgDrawable(context);
+                    setViewBg(background);
                     setOnTouchListener(windowManager, context, mSmallWindowView, BIG_WINDOW_TYPE);
                     windowManager.addView(mSmallWindowView, windowParams);
                 }
@@ -83,6 +90,22 @@ public class MyWindowManager implements Constants {
             default:
                 break;
         }
+    }
+
+    private Drawable getCurrentBgDrawable(Context context) {
+        Drawable background;
+        int bgId;
+        if (PreferenceUtil.getSingleton(context).getBoolean(SP_BG, false)) {
+            bgId = R.drawable.trans_bg;
+        } else {
+            bgId = R.drawable.float_bg;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            background = context.getDrawable(bgId);
+        } else {
+            background = context.getResources().getDrawable(bgId);
+        }
+        return background;
     }
 
     public void initData() {
@@ -101,10 +124,9 @@ public class MyWindowManager implements Constants {
         int screenWidth = sizePoint.x;
         int screenHeight = sizePoint.y;
         LayoutParams windowParams = new WindowManager.LayoutParams();
-        windowParams.type = LayoutParams.TYPE_PHONE;
+        windowParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
         windowParams.format = PixelFormat.RGBA_8888;
-        windowParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | LayoutParams.FLAG_NOT_FOCUSABLE;
+        windowParams.flags = LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL;
         windowParams.gravity = Gravity.START | Gravity.TOP;
         windowParams.width = LayoutParams.WRAP_CONTENT;
         windowParams.height = LayoutParams.WRAP_CONTENT;
@@ -149,6 +171,23 @@ public class MyWindowManager implements Constants {
                 return false;
             }
         });
+    }
+
+    public void setViewBg(Drawable background) {
+        if (mBigWindowView != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mBigWindowView.setBackground(background);
+            } else {
+                mBigWindowView.setBackgroundDrawable(background);
+            }
+        }
+        if (mSmallWindowView != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mSmallWindowView.setBackground(background);
+            } else {
+                mSmallWindowView.setBackgroundDrawable(background);
+            }
+        }
     }
 
     private void removeWindow(Context context, WindowView windowView) {

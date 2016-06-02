@@ -2,11 +2,13 @@ package com.acker.speedshow.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +18,11 @@ import android.widget.Toast;
 
 import com.acker.speedshow.R;
 import com.acker.speedshow.application.Constants;
+import com.acker.speedshow.controller.MyWindowManager;
 import com.acker.speedshow.service.FloatWindowService;
 import com.acker.speedshow.util.PreferenceUtil;
+
+import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity implements Constants {
     private Button btnOpen;
@@ -27,9 +32,14 @@ public class MainActivity extends AppCompatActivity implements Constants {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (PreferenceUtil.getSingleton(getApplicationContext()).getBoolean(SP_BG, false)) {
+            setTheme(R.style.AppThemeDark);
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
         super.onCreate(savedInstanceState);
-        preUtil = PreferenceUtil.getSingleton(getApplicationContext());
         setContentView(R.layout.activity_main);
+        preUtil = PreferenceUtil.getSingleton(getApplicationContext());
         intent = new Intent(MainActivity.this, FloatWindowService.class);
         btnOpen = (Button) findViewById(R.id.buttonOpen);
         btnOpen.setOnClickListener(new OnClickListener() {
@@ -62,12 +72,20 @@ public class MainActivity extends AppCompatActivity implements Constants {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (preUtil.getInt(SP_STATUSBAR_HEIGHT, 0) == 0) {
+            saveStatusBarHeight();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.getItem(0).setChecked(preUtil.getBoolean(SP_BOOT, true));
+        menu.getItem(1).setChecked(preUtil.getBoolean(SP_BG, false));
         return true;
     }
 
@@ -81,6 +99,24 @@ public class MainActivity extends AppCompatActivity implements Constants {
             case R.id.action_boot:
                 item.setChecked(!item.isChecked());
                 preUtil.saveBoolean(SP_BOOT, item.isChecked());
+                break;
+            case R.id.action_bg:
+                item.setChecked(!item.isChecked());
+                if (item.isChecked()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        MyWindowManager.getInstance().setViewBg(getDrawable(R.drawable.trans_bg));
+                    } else {
+                        MyWindowManager.getInstance().setViewBg(getResources().getDrawable(R.drawable.trans_bg));
+                    }
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        MyWindowManager.getInstance().setViewBg(getDrawable(R.drawable.float_bg));
+                    } else {
+                        MyWindowManager.getInstance().setViewBg(getResources().getDrawable(R.drawable.float_bg));
+                    }
+                }
+                preUtil.saveBoolean(SP_BG, item.isChecked());
+                recreate();
                 break;
             case R.id.action_donate:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MY_ALIPAY_URL));
@@ -102,6 +138,32 @@ public class MainActivity extends AppCompatActivity implements Constants {
             } else {
                 startService(intent);
             }
+        }
+    }
+
+    private void saveStatusBarHeight() {
+        if (preUtil.getInt(SP_STATUSBAR_HEIGHT, 0) == 0) {
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            Log.d("gjy", "statusBarHeight1=" + statusBarHeight);
+            if (statusBarHeight == 0) {
+                Class<?> c = null;
+                Object obj = null;
+                Field field = null;
+                int x;
+                try {
+                    c = Class.forName("com.android.internal.R$dimen");
+                    obj = c.newInstance();
+                    field = c.getField("status_bar_height");
+                    x = Integer.parseInt(field.get(obj).toString());
+                    statusBarHeight = getResources().getDimensionPixelSize(x);
+                    Log.d("gjy", "statusBarHeight2=" + statusBarHeight);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            preUtil.saveInt(SP_STATUSBAR_HEIGHT, statusBarHeight);
         }
     }
 }

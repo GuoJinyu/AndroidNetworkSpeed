@@ -26,7 +26,7 @@ public class PreferenceUtil {
     public void saveBoolean(String key, Boolean value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putBoolean(key, value);
-        editor.apply();
+        editor.commit();
     }
 
     public Boolean getBoolean(String key) {
@@ -37,17 +37,17 @@ public class PreferenceUtil {
         return mSharedPreferences.getBoolean(key, def);
     }
 
-/*    public void saveInt(String key, int value) {
+    public void saveInt(String key, int value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt(key, value);
-        editor.apply();
+        editor.commit();
     }
 
     public int getInt(String key) {
         return mSharedPreferences.getInt(key, 0);
     }
 
-    public int getInt(String key,int def) {
+    public int getInt(String key, int def) {
         return mSharedPreferences.getInt(key, def);
-    }*/
+    }
 }

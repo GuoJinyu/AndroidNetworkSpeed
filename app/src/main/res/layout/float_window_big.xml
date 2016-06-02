@@ -3,8 +3,9 @@
     android:id="@+id/rlLayoutBig"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/float_bg"
-    android:padding="2dp">
+    android:background="#00000000"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp">
 
     <TextView
         android:id="@+id/textView1"

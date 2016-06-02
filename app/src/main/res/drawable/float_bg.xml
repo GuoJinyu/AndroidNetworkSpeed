@@ -5,5 +5,5 @@
     <solid android:color="#99111111" />
     <!-- 设置矩形的四个角为弧形 -->
     <!-- android:radius 弧形的半径 -->
-    <corners android:radius="6dp" />
+    <corners android:radius="5dp" />
 </shape>
