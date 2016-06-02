@@ -40,5 +40,5 @@ build/
 # IDEA
 *.iml
 .idea
-
-
+*.ipr
+*.iws
