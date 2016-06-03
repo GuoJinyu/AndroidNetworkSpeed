@@ -75,9 +75,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
     @Override
     protected void onStart() {
         super.onStart();
-        if (preUtil.getInt(SP_STATUSBAR_HEIGHT, 0) == 0) {
-            saveStatusBarHeight();
-        }
+        saveStatusBarHeight();
     }
 
     @Override
@@ -148,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements Constants {
             int statusBarHeight = frame.top;
             Log.d("gjy", "statusBarHeight1=" + statusBarHeight);
             if (statusBarHeight == 0) {
-                Class<?> c = null;
-                Object obj = null;
-                Field field = null;
+                Class<?> c;
+                Object obj;
+                Field field;
                 int x;
                 try {
                     c = Class.forName("com.android.internal.R$dimen");
