@@ -67,7 +67,11 @@ public class MyWindowManager implements Constants {
                     mBigWindowView = new BigWindowView(context);
                     Drawable background = getCurrentBgDrawable(context);
                     setViewBg(background);
-                    setOnTouchListener(windowManager, context, mBigWindowView, SMALL_WINDOW_TYPE);
+                    if (PreferenceUtil.getSingleton(context).getBoolean(SP_LOC)) {
+                        setOnTouchListener(context, mBigWindowView, SMALL_WINDOW_TYPE);
+                    } else {
+                        setOnTouchListener(windowManager, context, mBigWindowView, SMALL_WINDOW_TYPE);
+                    }
                     windowManager.addView(mBigWindowView, windowParams);
                 }
                 tvMobileRx = (TextView) mBigWindowView.findViewById(R.id.tvMobileRx);
@@ -82,7 +86,11 @@ public class MyWindowManager implements Constants {
                     mSmallWindowView = new SmallWindowView(context);
                     Drawable background = getCurrentBgDrawable(context);
                     setViewBg(background);
-                    setOnTouchListener(windowManager, context, mSmallWindowView, BIG_WINDOW_TYPE);
+                    if (PreferenceUtil.getSingleton(context).getBoolean(SP_LOC)) {
+                        setOnTouchListener(context, mSmallWindowView, BIG_WINDOW_TYPE);
+                    } else {
+                        setOnTouchListener(windowManager, context, mSmallWindowView, BIG_WINDOW_TYPE);
+                    }
                     windowManager.addView(mSmallWindowView, windowParams);
                 }
                 tvSum = (TextView) mSmallWindowView.findViewById(R.id.tvSum);
@@ -130,8 +138,14 @@ public class MyWindowManager implements Constants {
         windowParams.gravity = Gravity.START | Gravity.TOP;
         windowParams.width = LayoutParams.WRAP_CONTENT;
         windowParams.height = LayoutParams.WRAP_CONTENT;
-        windowParams.x = screenWidth;
-        windowParams.y = screenHeight / 2;
+        int x = PreferenceUtil.getSingleton(context).getInt(SP_X, -1);
+        int y = PreferenceUtil.getSingleton(context).getInt(SP_Y, -1);
+        if (x == -1 || y == -1) {
+            x = screenWidth;
+            y = screenHeight / 2;
+        }
+        windowParams.x = x;
+        windowParams.y = y;
         return windowParams;
     }
 
@@ -157,6 +171,28 @@ public class MyWindowManager implements Constants {
                         // 更新悬浮窗位置
                         windowManager.updateViewLayout(windowView, windowParams);
                         return true;
+                    case MotionEvent.ACTION_UP:
+                        if ((System.currentTimeMillis() - exitTime) < CHANGE_DELAY) {
+                            createWindow(context, type);
+                            return true;
+                        } else {
+                            exitTime = System.currentTimeMillis();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void setOnTouchListener(final Context context, final WindowView windowView, final int type) {
+        windowView.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
                         if ((System.currentTimeMillis() - exitTime) < CHANGE_DELAY) {
                             createWindow(context, type);
@@ -268,4 +304,21 @@ public class MyWindowManager implements Constants {
         }
         return mWindowManager;
     }
+
+    public int getWindowX() {
+        return windowParams.x;
+    }
+
+    public int getWindowY() {
+        return windowParams.y;
+    }
+
+    public void fixWindow(Context context, boolean yes) {
+        if (yes) {
+            setOnTouchListener(context, mSmallWindowView == null ? mBigWindowView : mSmallWindowView, mSmallWindowView == null ? SMALL_WINDOW_TYPE : BIG_WINDOW_TYPE);
+        } else {
+            setOnTouchListener(getWindowManager(context), context, mSmallWindowView == null ? mBigWindowView : mSmallWindowView, mSmallWindowView == null ? SMALL_WINDOW_TYPE : BIG_WINDOW_TYPE);
+        }
+    }
+
 }

@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.getItem(0).setChecked(preUtil.getBoolean(SP_BOOT, true));
         menu.getItem(1).setChecked(preUtil.getBoolean(SP_BG, false));
+        menu.getItem(2).setChecked(preUtil.getBoolean(SP_LOC, false));
         return true;
     }
 
@@ -115,6 +116,15 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 }
                 preUtil.saveBoolean(SP_BG, item.isChecked());
                 recreate();
+                break;
+            case R.id.action_loc:
+                item.setChecked(!item.isChecked());
+                MyWindowManager.getInstance().fixWindow(MainActivity.this, item.isChecked());
+                preUtil.saveBoolean(SP_LOC, item.isChecked());
+                if (item.isChecked()) {
+                    preUtil.saveInt(SP_X, MyWindowManager.getInstance().getWindowX());
+                    preUtil.saveInt(SP_Y, MyWindowManager.getInstance().getWindowY());
+                }
                 break;
             case R.id.action_donate:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MY_ALIPAY_URL));

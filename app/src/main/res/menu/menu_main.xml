@@ -19,8 +19,16 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_donate"
+        android:id="@+id/action_loc"
         android:orderInCategory="3"
+        android:checkable="true"
+        android:checked="false"
+        android:title="@string/action_loc"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_donate"
+        android:orderInCategory="4"
         android:title="@string/action_donate"
         app:showAsAction="never" />
 </menu>
