@@ -8,4 +8,5 @@
     <string name="notice">简介：\n\n1.共包含两种悬浮窗，分别为小窗口(显示实时网速)与大窗口(显示详细信息)，通过本APP控制开启和关闭。\n\n2.实时网速是所有网卡上下行速度之和；详细信息中，W代表WiFi网络，M代表移动蜂窝网络，↑代表上传，↓代表下载。\n\n3.悬浮窗默认开启小窗口模式，双击悬浮窗切换窗口模式，悬浮窗均可自由拖动，并支持拖动到状态栏位置。\n\n4.若无法正常显示悬浮窗或开机自启，请在系统权限管理中赋予本应用相应权限。\n\n5.反馈邮箱：gjyvip@yeah.net；另外欢迎点击右上角设置项进行捐赠，您的支持是我前行的动力！</string>
     <string name="permission_alert">"6.0系统上需要开启此权限才能正常显示悬浮窗！"</string>
     <string name="permission_result">"要么开权限，要么就卸载！"</string>
+    <string name="string_setting_fix">请先开启悬浮窗再进行设置</string>
 </resources>

@@ -118,12 +118,16 @@ public class MainActivity extends AppCompatActivity implements Constants {
                 recreate();
                 break;
             case R.id.action_loc:
-                item.setChecked(!item.isChecked());
-                MyWindowManager.getInstance().fixWindow(MainActivity.this, item.isChecked());
-                preUtil.saveBoolean(SP_LOC, item.isChecked());
-                if (item.isChecked()) {
-                    preUtil.saveInt(SP_X, MyWindowManager.getInstance().getWindowX());
-                    preUtil.saveInt(SP_Y, MyWindowManager.getInstance().getWindowY());
+                if (MyWindowManager.getInstance().isWindowShowing()) {
+                    item.setChecked(!item.isChecked());
+                    MyWindowManager.getInstance().fixWindow(MainActivity.this, item.isChecked());
+                    preUtil.saveBoolean(SP_LOC, item.isChecked());
+                    if (item.isChecked()) {
+                        preUtil.saveInt(SP_X, MyWindowManager.getInstance().getWindowX());
+                        preUtil.saveInt(SP_Y, MyWindowManager.getInstance().getWindowY());
+                    }
+                } else {
+                    Toast.makeText(this, R.string.string_setting_fix, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.action_donate:
